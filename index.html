@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Running Dead</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css">
+  </head>
+  <body>
+    <section id="parametres" style="display: block">
+      <h1>Bienvenue sur <strong>Running Dead</strong> ! 🧟‍♂️🏃‍♂️</h1>
+      <p>
+        <strong>Running Dead</strong> est une application conçue pour vous aider
+        à améliorer votre vitesse et vos réflexes en vous préparant à un
+        scénario unique : une course d'orientation où des zombies vous
+        pourchassent ! 🧟‍♂️
+      </p>
+      
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Fonctionnalités principales
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#ModalExplication"
+      >
+        Comment ça marche ?
+      </button>
+
+      <p>
+        Prêt à échapper aux zombies ? Appuyez sur
+        <strong>"Lancer la course !"</strong> et montrez ce que vous valez !
+        🏃‍♀️💨
+      </p>
+
+      <div id="questionnaire">
+        <div class="input-group">
+          <label class="form-check-label" for="flexSwitchson">Bip</label>
+          <span class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchson"
+            />
+          </span>
+          <label class="form-check-label" for="flexSwitchCheckDefault"
+            >Cri Zombie</label
+          >
+        </div>
+
+        <div class="input-group">
+          <label class="form-check-label" for="flexSwitchCheckDefault"
+            >Thème light</label
+          >
+          <span class="form-check form-switch">
+            <input onclick="myFunction()"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+            />
+          </span>
+          <label class="form-check-label" for="flexSwitchCheckDefault"
+            >Thème dark</label
+          >
+        </div>
+
+        <div>
+          <label for="nbCourse">Nombre de sprint</label>
+          <input type="number" id="nbCourse" />
+        </div>
+
+        <div>
+          <label class="form-check-label" for="zombiesuccesif">
+            Zombie successif ?
+          </label>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckDefault"
+          />
+        </div>
+
+        <div>
+          <label for="tpsReposCourse">Temps de repos</label>
+          <input type="number" id="tpsReposCourse" />
+          <span>min </span>
+          <input type="number" id="tpsReposCoursemax" />
+          <span>max </span>
+        </div>
+
+        <button type="button">Lancer la course !</button>
+      </div>
+
+      <!-- Modal fonctionalité -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Fonctionnalités principales
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    L'objectif est simple : fuir le plus rapidement possible avant que le
+                    zombie ne vous rattrape. Votre mission est de courir des sprints de 100
+                    mètres tout en réagissant à l'apparition aléatoire d'un "zombie" (signal
+                    sonore) qui déclenche le départ du chronomètre. Plus vous êtes rapide à
+                    réagir et à terminer la course, meilleur sera votre score.
+                  </p>
+              <ul>
+                <li>
+                  <strong>Mode Sonore</strong> : Choisissez entre un bip
+                  classique ou un cri terrifiant de zombie pour signaler
+                  l’apparition d’un "zombie".
+                </li>
+                <li>
+                  <strong>Thème d'affichage</strong> : Optez pour un thème clair
+                  ou sombre selon vos préférences d'affichage.
+                </li>
+                <li>
+                  <strong>Courses à répétition</strong> : Choisissez le nombre
+                  de sprints à effectuer et ajustez le temps de repos entre
+                  chaque apparition de zombie.
+                </li>
+                <li>
+                  <strong>Zombies successifs</strong> : Vous pouvez décider de
+                  ne pas avoir de temps de repos entre les sprints pour un défi
+                  encore plus intense. Le nombre de zombie successif sera au
+                  maximum de 2.
+                </li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Explication -->
+      <div
+        class="modal fade"
+        id="ModalExplication"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Comment ça marche ?
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ol>
+                <li>
+                  <strong>Paramètres</strong> : Commencez par configurer
+                  l'application en choisissant vos préférences de son, de thème,
+                  et le nombre de courses à effectuer.
+                </li>
+                <li>
+                  <strong>Chronomètre</strong> : Après 5 secondes de
+                  préparation, un zombie apparaîtra à un moment aléatoire. Votre
+                  tâche est de courir aussi vite que possible !
+                </li>
+                <li>
+                  <strong>Résultats</strong> : À la fin de chaque sprint, votre
+                  temps sera enregistré, et à la fin de la session, vous verrez
+                  un récapitulatif de vos performances.
+                </li>
+              </ol>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- chrono -->
+    <section id="chrono" style="display: none">
+      <h2>Chrono Zombie</h2>
+      <div id="attentionMessage">ATTENTION</div>
+      <div id="zombieMessage" style="display: none">Go Go!</div>
+      <button id="stopChrono" style="display: none" onclick="stopChrono()">
+        Arrêter le chrono
+      </button>
+    </section>
+
+    <!-- resultat -->
+    <section id="resultats" style="display: none">
+      <h2>Résultats</h2>
+      <ul id="listeResultats"></ul>
+      <button onclick="recommencer()">Recommencer</button>
+    </section>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/assets/js/script.js"></script>
+
+  </body>
+</html>
