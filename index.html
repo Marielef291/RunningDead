@@ -10,8 +10,8 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <script src="./assets/js/script.js"></script>
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./assets/js/script.js" defer></script>
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
     <section id="parametres" style="display: block">
@@ -22,7 +22,6 @@
         scénario unique : une course d'orientation où des zombies vous
         pourchassent ! 🧟‍♂️
       </p>
-      
 
       <button
         type="button"
@@ -30,16 +29,7 @@
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
-        Fonctionnalités principales
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#ModalExplication"
-      >
-        Comment ça marche ?
+        En savoir plus
       </button>
 
       <p>
@@ -48,65 +38,93 @@
         🏃‍♀️💨
       </p>
 
-      <div id="questionnaire">
+      <div>
         <div class="input-group">
-          <label class="form-check-label" for="flexSwitchson">Bip</label>
+          <label class="form-check-label" for="theme">Thème light</label>
           <span class="form-check form-switch">
+            <input
+              onclick="darkMode()"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="theme"
+            />
+          </span>
+          <label class="form-check-label" for="theme">Thème dark</label>
+        </div>
+        <form id="formQuestionnaire">
+          <div class="input-group">
+            <label class="form-check-label" for="son">Bip</label>
+            <span class="form-check form-switch">
+              <input
+                name="son"
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="son"
+              />
+            </span>
+            <label class="form-check-label" for="son">Cri Zombie</label>
+          </div>
+
+          <div>
+            <label for="nbCourse">Nombre de sprint</label>
+            <input
+              type="number"
+              id="nbCourse"
+              name="nbCourse"
+              min="3"
+              max="20"
+              value="3"
+            />
+          </div>
+
+          <div>
+            <label class="form-check-label" for="zombiesuccessif">
+              Zombie successif ?
+            </label>
             <input
               class="form-check-input"
               type="checkbox"
-              role="switch"
-              id="flexSwitchson"
+              id="zombiesuccesif"
+              name="zombiesuccesif"
             />
-          </span>
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            >Cri Zombie</label
-          >
-        </div>
+          </div>
 
-        <div class="input-group">
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            >Thème light</label
-          >
-          <span class="form-check form-switch">
-            <input onclick="myFunction()"
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
+          <div>
+            <label for="distance">Distance</label>
+            <select name="distance" id="distance">
+              <option value="50">50 m</option>
+              <option value="100">100 m</option>
+              <option value="150">150 m</option>
+              <option value="200">200 m</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="tpsReposCourse">Temps de repos</label>
+            <input
+              type="number"
+              id="tpsReposCourse"
+              name="tpsReposCourse"
+              min="1"
+              max="10"
+              value="1"
             />
-          </span>
-          <label class="form-check-label" for="flexSwitchCheckDefault"
-            >Thème dark</label
-          >
-        </div>
+            <span>min </span>
+            <input
+              type="number"
+              id="tpsReposCoursemax"
+              name="tpsReposCoursemax"
+              min="1"
+              max="10"
+              value="10"
+            />
+            <span>max </span>
+          </div>
 
-        <div>
-          <label for="nbCourse">Nombre de sprint</label>
-          <input type="number" id="nbCourse" />
-        </div>
-
-        <div>
-          <label class="form-check-label" for="zombiesuccesif">
-            Zombie successif ?
-          </label>
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="flexCheckDefault"
-          />
-        </div>
-
-        <div>
-          <label for="tpsReposCourse">Temps de repos</label>
-          <input type="number" id="tpsReposCourse" />
-          <span>min </span>
-          <input type="number" id="tpsReposCoursemax" />
-          <span>max </span>
-        </div>
-
-        <button type="button">Lancer la course !</button>
+          <button type="submit">Lancer la course !</button>
+        </form>
       </div>
 
       <!-- Modal fonctionalité -->
@@ -117,11 +135,11 @@
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Fonctionnalités principales
+                EN SAVOIR PLUS
               </h1>
               <button
                 type="button"
@@ -131,13 +149,15 @@
               ></button>
             </div>
             <div class="modal-body">
-                <p>
-                    L'objectif est simple : fuir le plus rapidement possible avant que le
-                    zombie ne vous rattrape. Votre mission est de courir des sprints de 100
-                    mètres tout en réagissant à l'apparition aléatoire d'un "zombie" (signal
-                    sonore) qui déclenche le départ du chronomètre. Plus vous êtes rapide à
-                    réagir et à terminer la course, meilleur sera votre score.
-                  </p>
+              <h2 class="fs-5">Fonctionnalités principales</h2>
+              <p>
+                L'objectif est simple : fuir le plus rapidement possible avant
+                que le zombie ne vous rattrape. Votre mission est de courir des
+                sprints de 100 mètres tout en réagissant à l'apparition
+                aléatoire d'un "zombie" (signal sonore) qui déclenche le départ
+                du chronomètre. Plus vous êtes rapide à réagir et à terminer la
+                course, meilleur sera votre score.
+              </p>
               <ul>
                 <li>
                   <strong>Mode Sonore</strong> : Choisissez entre un bip
@@ -160,42 +180,8 @@
                   maximum de 2.
                 </li>
               </ul>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal Explication -->
-      <div
-        class="modal fade"
-        id="ModalExplication"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Comment ça marche ?
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
+              <hr />
+              <h2 class="fs-5">Comment ça marche ?</h2>
               <ol>
                 <li>
                   <strong>Paramètres</strong> : Commencez par configurer
@@ -228,17 +214,18 @@
       </div>
     </section>
 
-    <!-- chrono -->
+    <!-- SECTION chrono -->
     <section id="chrono" style="display: none">
       <h2>Chrono Zombie</h2>
       <div id="attentionMessage">ATTENTION</div>
+      <div>ICI PAGE CHRONO</div>
       <div id="zombieMessage" style="display: none">Go Go!</div>
       <button id="stopChrono" style="display: none" onclick="stopChrono()">
         Arrêter le chrono
       </button>
     </section>
 
-    <!-- resultat -->
+    <!-- SECTION resultats -->
     <section id="resultats" style="display: none">
       <h2>Résultats</h2>
       <ul id="listeResultats"></ul>
@@ -250,7 +237,5 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-
-
   </body>
 </html>
