@@ -1,4 +1,15 @@
-<img src="assets/images/logoFoncee.png" alt="Logo RunningDead" width="250" style="margin-left: 30px;" />
+<!-- Image par défaut -->
+<img src="/assets/images/logoFoncee.png" alt="Logo RunningDead" width="250" id="logo" style="margin-left: 30px;" />
+
+<!-- CSS pour changer d'image selon le mode sombre -->
+<style>
+  /* Image en mode sombre */
+  @media (prefers-color-scheme: dark) {
+    #logo {
+      content: url('/assets/images/logoClair.png');
+    }
+  }
+</style>
 
 Accédez à RunningDead en ligne ici : [RunningDead sur GitHub Pages](https://marielef291.github.io/RunningDead/).
 
