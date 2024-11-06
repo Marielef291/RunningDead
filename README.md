@@ -1,6 +1,5 @@
 <div style="display: flex; align-items: center;">
-    <img src="/assets/images/logoFoncee.png" alt="Logo RunningDead" width="250" id="logo" style="margin-left: 30px;" />
-    <img src="/assets/images/logoClair.png" alt="Logo RunningDead" width="250" id="logo" style="margin-left: 30px;" />
+    <img src="/assets/images/logoFondBlanc.jpg" alt="Logo RunningDead" width="250" id="logo" style="margin-left: 30px;" />
 </div>
 <br/>
 <br/>
