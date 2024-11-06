@@ -1,5 +1,4 @@
-<img src="assets/images/running%20Dead%20logo%20ton%20foncée.png" alt="Logo RunningDead" width="300"/>
-
+![Logo RunningDead](assets/images/running%20Dead%20logo%20ton%20foncée.png)
 # RunningDead
 
 Accédez à RunningDead en ligne ici : [RunningDead sur GitHub Pages](https://marielef291.github.io/RunningDead/).
