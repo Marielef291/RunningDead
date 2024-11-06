@@ -1,4 +1,4 @@
-# RunningDead <img src="assets/images/logoFoncee.png" alt="Logo RunningDead" width="200" style="margin-left: 60px;" />
+<img src="assets/images/logoFoncee.png" alt="Logo RunningDead" width="250" style="margin-left: 30px;" />
 
 Accédez à RunningDead en ligne ici : [RunningDead sur GitHub Pages](https://marielef291.github.io/RunningDead/).
 
