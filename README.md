@@ -1,4 +1,4 @@
-![Logo RunningDead](./assets/images/running%20Dead%20logo%20ton%20foncée.png)
+![Logo RunningDead](https://github.com/Marielef291/RunningDead/blob/main/assets/images/logoFoncee.png)
 # RunningDead
 
 Accédez à RunningDead en ligne ici : [RunningDead sur GitHub Pages](https://marielef291.github.io/RunningDead/).
