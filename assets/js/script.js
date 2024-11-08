@@ -128,10 +128,10 @@ const play = async () => {
     return new Promise((resolve) => {
         let audio
         if (dataObject.son == "on"){
-            audio = new Audio("/assets/sono/bruitagesZombie.mp3");
+            audio = new Audio("./assets/sono/bruitagesZombie.mp3");
         }
         else {
-            audio = new Audio("/assets/sono/bipSonarRunningdead.mp3");
+            audio = new Audio("./assets/sono/bipSonarRunningdead.mp3");
         }
         
         audio.play();
