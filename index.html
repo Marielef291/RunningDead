@@ -214,15 +214,39 @@
       </div>
     </section>
 
+
+    <!-- SECTION 3s-->
+    <section id="troisSeconde" style="display: none">
+      <div class ="container">
+        <span id="decompte">3</span>
+      </div>
+    </section>
+
     <!-- SECTION chrono -->
     <section id="chrono" style="display: none">
-      <h2>Chrono Zombie</h2>
-      <div id="attentionMessage">ATTENTION</div>
-      <div>ICI PAGE CHRONO</div>
-      <div id="zombieMessage" style="display: none">Go Go!</div>
-      <button id="stopChrono" style="display: none" onclick="stopChrono()">
-        Arrêter le chrono
-      </button>
+      <div class ="container">
+        <div class="watch">
+            <div class="outer-circle" id="outer-circle">
+                <div class="inner-circle">
+                    <span class="text minute" id="minute">00 :</span>
+                    <span class="text sec" id="sec">&nbsp;00 .</span>
+                    <span class="text msec" id="msec">&nbsp;00</span>
+                </div>
+            </div>
+            <div class="button-wrapper">
+                <button class="button stop" id="stop">Fini</button>
+            </div>
+        </div>
+    </div>
+    </section>
+    
+
+    <!--SECTION d'attente-->
+    <section id="enAttente" style="display: none">
+      <h3>Attention un zombie va bientôt arriver !</h3>
+      <div id="affiPrecResult">
+        <p>Votre temps au précédent sprint <span id="precSprint"></span></p>
+      </div>
     </section>
 
     <!-- SECTION resultats -->
