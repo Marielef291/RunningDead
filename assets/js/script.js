@@ -1,4 +1,4 @@
-console.log("hello world");
+console.log("Bienvenue sur Running Dead !");
 
 const firstPage = document.getElementById("parametres")
 const chronoPage = document.getElementById("chrono")
@@ -54,15 +54,12 @@ document.getElementById('formQuestionnaire').addEventListener('submit', function
     });
 
     localStorage.setItem("ParamRunDead", JSON.stringify(dataObject));
-
     chrono();
-
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////  3s de décompte ///////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////  3s de décompte /////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 const startCountdown = async () => {
     return new Promise((resolve) => {
         let countdownValue = 3; // Départ du compte à rebours
@@ -85,61 +82,58 @@ const startCountdown = async () => {
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////  CHRONO  //////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////  CHRONO  ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 const stopbutton = document.getElementById("stop");
 const minute = document.getElementById("minute");
 const seconde = document.getElementById("sec");
 const centiSeconde = document.getElementById("msec");
 const bg = document.getElementById("outer-circle");
 
-
 let startTime, elapsedTime = 0;
-let minCounter = 0;
-let secCounter = 0;
-let centiCounter = 0;
 let requestID;
 let tempsList = []; // Liste temporaire pour les temps
-
 
 
 const enregistrerTemps = (temps) => {
     tempsList.push(temps); // Ajouter le temps dans la liste temporaire
 };
 
+// Fonction pour obtenir les valeurs actuelles des minutes, secondes et centièmes depuis elapsedTime
+const getTimeCounters = (elapsedTime) => {
+    const min = Math.floor(elapsedTime / 60000);
+    const sec = Math.floor((elapsedTime % 60000) / 1000);
+    const centi = Math.floor((elapsedTime % 1000) / 10);
+    return { min, sec, centi };
+};
+
+// Fonction pour formater les compteurs en une chaîne de caractères
+const getFormattedTime = ({ min, sec, centi }) => {
+    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}.${String(centi).padStart(2, '0')}`;
+};
+
 // Fonction pour réinitialiser le chronomètre
 const resetChrono = () => {
     elapsedTime = 0;
-    minCounter = 0;
-    secCounter = 0;
-    centiCounter = 0;
-
-    // Mettre à jour l'affichage
     minute.innerHTML = '00 :';
     seconde.innerHTML = '&nbsp;00 .';
     centiSeconde.innerHTML = '&nbsp;00';
-
 };
 
-// Fonction pour démarrer le chronomètre
 const play = async () => {
     return new Promise((resolve) => {
-        let audio
+        let audio;
         if (dataObject.son == "on"){
             audio = new Audio("./assets/sono/bruitagesZombie.mp3");
-        }
-        else {
+        } else {
             audio = new Audio("./assets/sono/bipSonarRunningdead.mp3");
         }
-        
         audio.play();
         stopbutton.disabled = true;
         let tpsDisabled;
 
-        // Vérifie si distance est bien une valeur valide
-        switch (dataObject.distance) { // Conversion en string si nécessaire
+        switch (dataObject.distance) {
             case "50":
                 tpsDisabled = 5;
                 break;
@@ -154,7 +148,7 @@ const play = async () => {
                 break;
             default:
                 console.error("Valeur de distance non valide :", distance);
-                tpsDisabled = 0; // ou une valeur par défaut si distance est invalide
+                tpsDisabled = 0;
         }
 
         setTimeout(() => {
@@ -162,60 +156,67 @@ const play = async () => {
         }, tpsDisabled * 1000);
 
         bg.classList.add("animation-bg");
-
-        // Définir l'heure de début en tenant compte du temps écoulé si en pause
         startTime = Date.now() - elapsedTime;
 
-        // Fonction d'animation
         const updateTime = () => {
             elapsedTime = Date.now() - startTime;
+            const timeCounters = getTimeCounters(elapsedTime);
 
-            // Calculer les minutes, secondes et centièmes de seconde
-            minCounter = Math.floor(elapsedTime / 60000);
-            secCounter = Math.floor((elapsedTime % 60000) / 1000);
-            centiCounter = Math.floor((elapsedTime % 1000) / 10);
+            minute.innerHTML = `${String(timeCounters.min).padStart(2, '0')} :`;
+            seconde.innerHTML = `&nbsp;${String(timeCounters.sec).padStart(2, '0')} .`;
+            centiSeconde.innerHTML = `&nbsp;${String(timeCounters.centi).padStart(2, '0')}`;
 
-            // Mettre à jour les affichages avec un format à deux chiffres
-            minute.innerHTML = `${String(minCounter).padStart(2, '0')} :`;
-            seconde.innerHTML = `&nbsp;${String(secCounter).padStart(2, '0')} .`;
-            centiSeconde.innerHTML = `&nbsp;${String(centiCounter).padStart(2, '0')}`;
-
-            // Boucler l'animation
             requestID = requestAnimationFrame(updateTime);
         };
 
         updateTime();
 
-        // Écouteur pour arrêter le chrono et enregistrer le temps, puis résoudre la promesse
         stopbutton.addEventListener("click", () => {
-            tempsList.push(`${String(minCounter).padStart(2, '0')}:${String(secCounter).padStart(2, '0')}.${String(centiCounter).padStart(2, '0')}`);
-            console.log(tempsList);
+            const finalTime = getFormattedTime(getTimeCounters(elapsedTime));
+            tempsList.push(elapsedTime);
             cancelAnimationFrame(requestID);
             bg.classList.remove("animation-bg");
-            // audio.stop();
             resetChrono();
-            resolve(); // Résout la promesse quand le chrono s'arrête
-        }, { once: true }); // L'événement s'exécute une seule fois
+            resolve();
+        }, { once: true });
     });
 };
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////  ATTENTE //////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////  ATTENTE ////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 const precSprint = document.getElementById("precSprint");
+const reposList = []
+const reposAffich = document.getElementById("reposAffich");
 
+function getRandomIntInclusive(min, max) {
+    return (Math.random() * (max - min)) + min;
+}
 
 const tempsAttente = async () => {
     return new Promise((resolve) => {
-        precSprint.innerHTML = tempsList[tempsList.length - 1];
+        if (reposList.length === 0){
+            precSprint.innerHTML = getFormattedTime(getTimeCounters(tempsList[tempsList.length - 1]));
+        }else{
+            precSprint.innerHTML = getFormattedTime(getTimeCounters(tempsList[tempsList.length - 1]));
+            reposAffich.innerHTML = ` avec un temps de repos de ${getFormattedTime(getTimeCounters(reposList[reposList.length - 1]))}`;
+        }
+
+        //génération aléatoire du temps d'attente
+        tpsRepos = getRandomIntInclusive(parseInt(dataObject.tpsReposCourse, 10), parseInt(dataObject.tpsReposCoursemax, 10))
+
+        const tpsReposMillis = tpsRepos * 60 * 1000; // Convertit en millisecondes
+        const timeCountersRepos = getTimeCounters(tpsReposMillis);
+        const formattedTime = getFormattedTime(timeCountersRepos);
+
+        // console.log(`Temps de repos en millisecondes : ${tpsReposMillis} ms`);
+        console.log(`Temps de repos : ${formattedTime}`);
+        reposList.push(`${tpsReposMillis}`)
         setTimeout(() => {
-            
             resolve(); // Résout la promesse après le délai d'attente
-        }, 10 * 1000); // Attente de 10 secondes
+        }, tpsReposMillis); // Attente de 10 secondes <=== CHANGER ICI POUR LES TESTS
     });
 };
-
 
 const chrono = async () => {
     firstPage.style.display="none";
@@ -237,12 +238,13 @@ const chrono = async () => {
     finaliserEntrainement(); // Appelle finaliserEntrainement après la fin de toutes les courses
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////  RESULTAT /////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////  RESULTAT ///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 const listeResultats = document.getElementById("listeResultats")
 const affichageResulat = () => {
-
+    // console.log(reposList);
+    let totalMillis = 0;
     for (let i = 0; i < tempsList.length; i++){
         const li = document.createElement("li");
         const number = document.createElement("span");
@@ -253,10 +255,41 @@ const affichageResulat = () => {
         timeStamp.setAttribute("class", "time-stamp");
 
         number.innerText = `#${i+1}`;
-        timeStamp.innerHTML = tempsList [i]
+        timeStamp.innerHTML = getFormattedTime(getTimeCounters(tempsList [i]))
+
         li.append(number, timeStamp);
+        totalMillis += tempsList [i];
+
         listeResultats.append(li);
     }
+
+    const moyenneMillis = getFormattedTime(getTimeCounters(totalMillis / dataObject.nbCourse));
+    
+    // Calcul de la vitesse moyenne en m/s
+    const tempsTotalSecondes = totalMillis / 1000; // Temps total en secondes
+    const distanceTotale = dataObject.distance * dataObject.nbCourse; // Distance totale en mètres
+    const vitesseMoyenne = ((distanceTotale / tempsTotalSecondes)*3.6).toFixed(2); // km/h
+
+
+    const tempsTotalMinutes = totalMillis / (1000 * 60); // Temps total en minutes
+    const distanceTotaleKm = (dataObject.distance * dataObject.nbCourse) / 1000; // Distance totale en kilomètres
+    // Calcul du rythme en min/km
+    const rythmeMinParKm = (tempsTotalMinutes / distanceTotaleKm).toFixed(2); // min/km
+
+    // Affichage du temps moyen
+    const moyenneElem = document.createElement("li");
+    moyenneElem.innerText = `Temps moyen : ${moyenneMillis}`;
+    listeResultats.append(moyenneElem);
+
+    // Affichage de la vitesse moyenne
+    const vitesseElem = document.createElement("li");
+    vitesseElem.innerText = `Vitesse moyenne : ${vitesseMoyenne} km/h`;
+    listeResultats.append(vitesseElem);
+
+    // Affichage de la rythme moyen
+    const rythmeElem = document.createElement("li");
+    rythmeElem.innerText = `Rythme moyen : ${rythmeMinParKm} min/km`;
+    listeResultats.append(rythmeElem);
 }
 
 
@@ -267,7 +300,7 @@ const sauvegarderDansLocalStorage = () => {
 // Fonction à appeler à la fin de l'entraînement
 const finaliserEntrainement = () => {
     sauvegarderDansLocalStorage();
-    console.log("Entraînement sauvegardé !");
+    // console.log("Entraînement sauvegardé !");
 };
 
 // Événement pour sauvegarder les données en cas de fermeture ou de rechargement de la page
