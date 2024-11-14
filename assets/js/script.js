@@ -155,10 +155,10 @@ const chrono = async () => {
     }
 
     if (isChronoRunning) { // Afficher les résultats seulement si le chrono est actif
+        finaliserEntrainement(tempsList, reposList, dataObject.distance);
         affichageResulat();
         resultPage.style.display = "block";
         chronoToAccueil.style.display = "block";
-        finaliserEntrainement(tempsList, reposList, dataObject.distance);
     }
     isChronoRunning = false; // Chrono terminé
 };
@@ -244,7 +244,7 @@ const affichageResulat = () => {
     }
 
     const sessions = loadSessions();
-    const dernieresSessions = sessions.slice(-5);
+    const dernieresSessions = sessions.length > 5 ? sessions.slice(-5) : sessions;
 
     const labels = dernieresSessions[0].temps.map((_, index) => `Tour ${index + 1}`);
 
@@ -320,7 +320,12 @@ function recommencer() {
     console.log(tempsList);
     console.log(reposList);
     listeResultats.innerHTML = "";
-    document.getElementById("alerteLocalStorage").innerHTML =""
+    document.getElementById("alerteLocalStorage").innerHTML ="";
+    const divCanvas = document.getElementById("canvas");
+    divCanvas.innerHTML = ""; // Efface le contenu existant de la div
+    const canvas = document.createElement("canvas");
+    canvas.id = "myChart";
+    divCanvas.appendChild(canvas);
     firstPage.style.display = "block";
     resultPage.style.display = "none";
 }

@@ -1,7 +1,9 @@
 import { getTimeCounters, getFormattedTime } from "./fonctions.js";
-
+// import NoSleep from '/../node_modules/nosleep.js/dist/NoSleep.js';
 export let requestID;
 export let elapsedTime = 0;
+
+// let noSleep = new NoSleep();
 
 export const startCountdown = async () => {
     return new Promise((resolve) => {
