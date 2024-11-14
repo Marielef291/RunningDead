@@ -14,12 +14,15 @@ Accédez à RunningDead en ligne ici : [RunningDead sur GitHub Pages](https://ma
 
 L'objectif de RunningDead est simple : vous préparer à réagir et courir avant qu'un zombie ne vous attrape. Le but est de réaliser des sprints de 50, 100 ou 200 mètres en réponse à un signal sonore aléatoire indiquant l'apparition d'un zombie. À chaque signal, le chronomètre se déclenche, et votre mission est de réagir et terminer le sprint aussi rapidement que possible. Plus vous êtes rapide et réactif, plus vous serez prêt pour une véritable course d'orientation zombie.
 
+
 ## Fonctionnalités principales
 
 - **Simulation d’une CO zombie** : Sprints chronométrés déclenchés par des alertes sonores aléatoires.
 - **Options de personnalisation** : Choix de distance pour les sprints (50, 100, 200 mètres) pour adapter l'entraînement.
 - **Stockage des préférences utilisateur** : Enregistrement local des choix et des résultats via `localStorage`.
 - **Mode sombre** : Option de thème sombre pour un confort visuel accru.
+
+> **Note** : RunningDead utilise [NoSleep.js](https://github.com/richtr/NoSleep.js) de Rich Tibbett pour empêcher l'écran de s'éteindre pendant les entraînements.
 
 ## Auteurs
 
@@ -45,6 +48,7 @@ The goal of RunningDead is simple: to train you to react and run before a zombie
 - **User preferences storage**: Local storage of settings and results via `localStorage`.
 - **Dark mode**: An optional dark theme for improved visual comfort.
 
+> **Note**: RunningDead uses [NoSleep.js](https://github.com/richtr/NoSleep.js) by Rich Tibbett to prevent the screen from sleeping during training sessions.
 ## Authors
 
 RunningDead is the product of a collaborative effort between:

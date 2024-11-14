@@ -1,9 +1,8 @@
 import { getTimeCounters, getFormattedTime } from "./fonctions.js";
-// import NoSleep from '/../node_modules/nosleep.js/dist/NoSleep.js';
+
 export let requestID;
 export let elapsedTime = 0;
 
-// let noSleep = new NoSleep();
 
 export const startCountdown = async () => {
     return new Promise((resolve) => {
@@ -98,6 +97,7 @@ export const stopChrono = (tempsList, stopbutton, bg, minute, seconde, centiSeco
         stopbutton.addEventListener("click", () => {
             const elapsedTime = Date.now() - startTime; // Calculer elapsedTime une dernière fois lors de l'arrêt
             tempsList.push(elapsedTime); // Sauvegarde le temps final
+            console.log(`Temps de course : ${getFormattedTime(getTimeCounters(elapsedTime))}`);
             cancelAnimationFrame(requestID); // Arrête l'animation
             bg.classList.remove("animation-bg");
             resetChrono(minute, seconde, centiSeconde); // Réinitialise l'affichage
@@ -111,27 +111,3 @@ export const play = async (dataObject, stopbutton, bg, minute, seconde, centiSec
     updateChrono(startTime, minute, seconde, centiSeconde); // Met à jour en temps réel
     await stopChrono(tempsList, stopbutton, bg, minute, seconde, centiSeconde, startTime); // Attend l'arrêt du chrono
 };
-
-
-
-// export const retourAccueil = (isChronoRunning, minute, seconde, centiSeconde, firstPage, chronoPage, resultPage, troisSeconde) => {
-//     isChronoRunning = false; // Arrête le chronomètre
-//     // Arrête les timers en cours et réinitialise le chronomètre
-//     cancelAnimationFrame(requestID); // Annule le frame request pour le chronomètre
-//     elapsedTime = 0; // Réinitialise le temps écoulé
-
-//     // Réinitialise les éléments d'affichage
-//     resetChrono(minute, seconde, centiSeconde);
-
-//     // Remet à zéro le décompte (dans startCountdown, si on avait un intervalle en cours)
-//     const countdownElement = document.getElementById("decompte");
-//     if (countdownElement) {
-//         countdownElement.innerText = "3"; // Remet le décompte à 3 secondes
-//     }
-
-//     troisSeconde.style.display = "none";
-//     firstPage.style.display = "block";
-//     chronoPage.style.display = "none";
-//     resultPage.style.display = "none";
-
-// }

@@ -68,4 +68,9 @@ export const downloadCSV = () => {
 
     // Libérer l'URL créée après le téléchargement
     URL.revokeObjectURL(url);
+    // Demander à l'utilisateur s'il veut supprimer les anciennes données
+    if (confirm("Voulez-vous supprimer les anciennes données après le téléchargement ?")) {
+        localStorage.removeItem('sessionsEntrainement'); // Supprimer les données de sessions
+        console.log("Les anciennes données ont été supprimées.");
+    }
 };

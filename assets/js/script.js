@@ -1,6 +1,9 @@
 import { loadSessions, finaliserEntrainement, downloadCSV } from "./gestionLocalStorage.js";
 import { getTimeCounters, getFormattedTime } from "./fonctions.js";
-import { startCountdown, play, resetChrono, requestID, elapsedTime } from "./chronoLogic.js";
+import { startCountdown, play} from "./chronoLogic.js";
+import { NoSleep } from './noSleep/index.js';
+
+
 console.log("Bienvenue sur Running Dead !");
 
 
@@ -12,10 +15,18 @@ const troisSeconde = document.getElementById("troisSeconde")
 const decompteToAccueil = document.getElementById("decompteToAccueil")
 const chronoToAccueil = document.getElementById("chronoToAccueil")
 
-
+let noSleep = new NoSleep();
 const dataObject = {};
 let isZombieSuccessif;
+let isViewTpsPause;
+let tempsList = []; 
+let isChronoRunning = false;
 
+
+decompteToAccueil.addEventListener("click", () => retourAccueil());
+chronoToAccueil.addEventListener("click", () => retourAccueil());
+
+//récupérer les données du formulaire
 document.addEventListener('DOMContentLoaded', function() {
     const savedData = JSON.parse(localStorage.getItem("ParamRunDead"));
 
@@ -30,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('son').checked = savedData.son === 'on';
         document.getElementById('zombiesuccessif').checked = savedData.zombiesuccessif === 'on';
         document.getElementById('theme').checked = savedData.theme === 'true';
+        document.getElementById('viewTpsPause').checked = savedData.viewTpsPause === 'on';
         
         // Appliquer le thème sombre si nécessaire
         if (savedData.theme === 'true') {
@@ -43,6 +55,7 @@ function darkMode() {
     body.classList.toggle("dark-mode");
 }
 
+//enregistre les données dans le formulaire
 document.getElementById('formQuestionnaire').addEventListener('submit', function(event) {
     event.preventDefault(); 
     const formData = new FormData(this);
@@ -54,26 +67,66 @@ document.getElementById('formQuestionnaire').addEventListener('submit', function
     if (!formData.has('zombiesuccessif')) {
         formData.append('zombiesuccessif', 'off');
     }
+
+    if (!formData.has('viewTpsPause')) {
+        formData.append('viewTpsPause', 'off');
+    }
     formData.append('theme', document.getElementById('theme').checked ? true : false);
 
     formData.forEach((value, key) => {
         dataObject[key] = value;
     });
-
-   isZombieSuccessif = dataObject.zombiesuccessif == "on" ? true : false;
+    isViewTpsPause = dataObject.viewTpsPause == "on"? true : false;
+    isZombieSuccessif = dataObject.zombiesuccessif == "on" ? true : false;
     localStorage.setItem("ParamRunDead", JSON.stringify(dataObject));
     chrono();
 });
+
+////////////////////////////////////
+////////// RETOUR ACCUEIL //////////
+////////////////////////////////////
+
+let isNavigating = false;
+
+
+const retourAccueil = () => {
+    if (isChronoRunning) {
+        const confirmation = confirm("Voulez-vous retourner à la page d'accueil ? Vos temps pour cette session seront perdus.");
+        if (confirmation) {
+            isNavigating = true; // Désactive l'alerte de beforeunload
+            window.location.reload(); // Recharge la page pour retourner à l'accueil
+        }
+    } else {
+        isNavigating = true; // Désactive l'alerte de beforeunload
+        window.location.reload(); // Recharge directement si le chrono n'est pas en cours
+    }
+};
+
+
+window.addEventListener('beforeunload', function(event) {
+    if (isChronoRunning && !isNavigating) {
+        event.preventDefault();
+        event.returnValue = ''; // Nécessaire pour certains navigateurs pour montrer l'alerte
+    }
+});
+
+document.getElementById("recommencerButton").addEventListener("click", recommencer);
+
+function recommencer() {
+    isNavigating = true; // Désactive l'alerte de beforeunload
+    window.location.reload(); // Recharge directement 
+}
+
 
 /////////////////////////////
 ////////// ATTENTE //////////
 /////////////////////////////
 
 const precSprint = document.getElementById("precSprint");
-const reposList = []
 const reposAffich = document.getElementById("reposAffich");
-// const isZombieSuccessif = dataObject.zombiesuccessif == "on" ? true : false;
+const tpsPauseActuel = document.getElementById("tpsPauseActuel")
 
+const reposList = []
 
 function getRandomIntInclusive(min, max) {
     return (Math.random() * (max - min)) + min;
@@ -81,8 +134,6 @@ function getRandomIntInclusive(min, max) {
 
 const tempsAttente = async () => {
     return new Promise((resolve) => {
-        // console.log(dataObject.zombiesuccessif);
-        console.log(isZombieSuccessif);
         let tpsRepos;
         precSprint.innerHTML = getFormattedTime(getTimeCounters(tempsList[tempsList.length - 1]));
         if (reposList.length >=1){
@@ -90,7 +141,6 @@ const tempsAttente = async () => {
         }
 
         const isSuccessif = Math.random() < 0.5
-        console.log(isSuccessif);
         if (isZombieSuccessif && isSuccessif){
             tpsRepos = 0;
             isZombieSuccessif = false
@@ -98,15 +148,16 @@ const tempsAttente = async () => {
             tpsRepos = getRandomIntInclusive(parseInt(dataObject.tpsReposCourse, 10), parseInt(dataObject.tpsReposCoursemax, 10))
         }
         
-
         const tpsReposMillis = tpsRepos * 60 * 1000; // Convertit en millisecondes
         const formattedTime = getFormattedTime(getTimeCounters(tpsReposMillis));
+        if (isViewTpsPause){
+            tpsPauseActuel.innerText = `Temps de pause actuelle : ${formattedTime}`
+        }
 
-        console.log(`Temps de repos : ${formattedTime}`);
         reposList.push(`${tpsReposMillis}`)
         setTimeout(() => {
             resolve(); // Résout la promesse après le délai d'attente
-        }, 10 * 1000); // Attente de 10 secondes <=== CHANGER ICI POUR LES TESTS
+        }, tpsReposMillis); // Attente de 10 secondes <=== CHANGER ICI POUR LES TESTS
     });
 };
 
@@ -121,16 +172,10 @@ const seconde = document.getElementById("sec");
 const centiSeconde = document.getElementById("msec");
 const bg = document.getElementById("outer-circle");
 
-let tempsList = []; 
-let isChronoRunning = false;
-
-
-
-decompteToAccueil.addEventListener("click", () => retourAccueil());
-chronoToAccueil.addEventListener("click", () => retourAccueil());
-
 const chrono = async () => {
     isChronoRunning = true; // Le chronomètre est actif
+
+    noSleep.enable();// Activer NoSleep pour empêcher l'écran de s'éteindre
 
     firstPage.style.display = "none";
     troisSeconde.style.display = "block";
@@ -160,35 +205,10 @@ const chrono = async () => {
         resultPage.style.display = "block";
         chronoToAccueil.style.display = "block";
     }
+
+    noSleep.disable();// Désactiver NoSleep lorsque le chrono est terminé
     isChronoRunning = false; // Chrono terminé
 };
-
-
-
-const retourAccueil = () => {
-    isChronoRunning = false; // Arrête le chronomètre
-    // Arrête les timers en cours et réinitialise le chronomètre
-    cancelAnimationFrame(requestID); // Annule le frame request pour le chronomètre
-    // Réinitialise les éléments d'affichage
-    resetChrono(minute, seconde, centiSeconde);
-
-    // Remet à zéro le décompte (dans startCountdown, si on avait un intervalle en cours)
-    const countdownElement = document.getElementById("decompte");
-    if (countdownElement) {
-        countdownElement.innerText = "3"; // Remet le décompte à 3 secondes
-    }
-
-    // Réinitialiser les listes de temps de repos
-    tempsList.length = 0;
-    reposList.length = 0;  // Réinitialiser les temps de repos pour éviter les doublons
-
-    troisSeconde.style.display = "none";
-    firstPage.style.display = "block";
-    chronoPage.style.display = "none";
-    resultPage.style.display = "none";
-}
-
-
 
 //////////////////////////////
 ////////// RESULTAT //////////
@@ -300,32 +320,4 @@ const affichageResulat = () => {
     });
 };
 
-
-// Empêcher le rechargement pendant que chrono() est actif
-window.addEventListener('beforeunload', function(event) {
-    if (isChronoRunning) {
-        event.preventDefault();
-        event.returnValue = ''; // Nécessaire pour certains navigateurs pour montrer l'alerte
-    }
-});
-
-document.getElementById("recommencerButton").addEventListener("click", recommencer);
-
 document.getElementById("telechargerDonnees").addEventListener("click", downloadCSV)
-
-
-function recommencer() {
-    tempsList.length = 0;
-    reposList.length = 0;
-    console.log(tempsList);
-    console.log(reposList);
-    listeResultats.innerHTML = "";
-    document.getElementById("alerteLocalStorage").innerHTML ="";
-    const divCanvas = document.getElementById("canvas");
-    divCanvas.innerHTML = ""; // Efface le contenu existant de la div
-    const canvas = document.createElement("canvas");
-    canvas.id = "myChart";
-    divCanvas.appendChild(canvas);
-    firstPage.style.display = "block";
-    resultPage.style.display = "none";
-}

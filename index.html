@@ -12,7 +12,6 @@
     />
     <script type="module" src="./assets/js/script.js" defer></script>
     <link rel="stylesheet" href="./assets/css/style.css" />
-    <script type="module" src="./assets/js/noSleep/index.js"></script>
   </head>
   <body>
     <section id="parametres" style="display: block">
@@ -24,7 +23,6 @@
         pourchassent ! 🧟‍♂️
       </p>
 
-      <input type="button" id="toggle" value="Wake Lock is disabled" />
       <button
         type="button"
         class="btn btn-primary"
@@ -123,6 +121,17 @@
               value="10"
             />
             <span>max </span>
+          </div>
+          
+          <div>
+            <label for="viewTpsPause">Voir temps de repos</label>
+            <input
+            class="form-check-input"
+            type="checkbox"
+            id="viewTpsPause"
+            name="viewTpsPause"
+          />
+          <span>(nous vous déconseillons d'activer cette option, car cela perd en spontanéité pour l'entraînement) </span>
           </div>
 
           <button type="submit">Lancer la course !</button>
@@ -250,6 +259,7 @@
       <h3>Attention un zombie va bientôt arriver !</h3>
       <div id="affiPrecResult">
         <p>Votre temps au précédent sprint est de <span id="precSprint"></span><span id="reposAffich"></span></p>
+        <p id="tpsPauseActuel"></p>
       </div>
     </section>
 
@@ -273,25 +283,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script type="module">
-      import { NoSleep } from './assets/js/noSleep/index.js';
-
-      var noSleep = new NoSleep();
-      var wakeLockEnabled = false;
-      var toggleEl = document.querySelector("#toggle");
-      toggleEl.addEventListener('click', function() {
-        if (!wakeLockEnabled) {
-          noSleep.enable(); // keep the screen on!
-          wakeLockEnabled = true;
-          toggleEl.value = "Wake Lock is enabled";
-          toggleEl.style.backgroundColor = "green";
-        } else {
-          noSleep.disable(); // let the screen turn off.
-          wakeLockEnabled = false;
-          toggleEl.value = "Wake Lock is disabled";
-          toggleEl.style.backgroundColor = "red";
-        }
-      }, false);
-    </script>
+    
   </body>
 </html>
