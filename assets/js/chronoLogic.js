@@ -97,7 +97,6 @@ export const stopChrono = (tempsList, stopbutton, bg, minute, seconde, centiSeco
         stopbutton.addEventListener("click", () => {
             const elapsedTime = Date.now() - startTime; // Calculer elapsedTime une dernière fois lors de l'arrêt
             tempsList.push(elapsedTime); // Sauvegarde le temps final
-            console.log(`Temps de course : ${getFormattedTime(getTimeCounters(elapsedTime))}`);
             cancelAnimationFrame(requestID); // Arrête l'animation
             bg.classList.remove("animation-bg");
             resetChrono(minute, seconde, centiSeconde); // Réinitialise l'affichage

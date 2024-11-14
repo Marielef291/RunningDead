@@ -21,7 +21,6 @@ export const finaliserEntrainement = (tempsList, reposList, distance) => {
     };
 
     sauvegarderSession(sessionData); // Sauvegarder cette session
-    console.log("Session d'entraînement sauvegardée :", sessionData);
 };
 
 // Fonction pour convertir les données des sessions en CSV
