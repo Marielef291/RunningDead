@@ -26,7 +26,7 @@ let isChronoRunning = false;
 decompteToAccueil.addEventListener("click", () => retourAccueil());
 chronoToAccueil.addEventListener("click", () => retourAccueil());
 
-//récupérer les données du formulaire
+// Récupérer les données du formulaire
 document.addEventListener('DOMContentLoaded', function() {
     const savedData = JSON.parse(localStorage.getItem("ParamRunDead"));
 
@@ -42,20 +42,22 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('zombiesuccessif').checked = savedData.zombiesuccessif === 'on';
         document.getElementById('theme').checked = savedData.theme === 'true';
         document.getElementById('viewTpsPause').checked = savedData.viewTpsPause === 'on';
-        
+
         // Appliquer le thème sombre si nécessaire
-        if (savedData.theme === 'true') {
+        if (savedData.theme === 'true' && typeof darkMode === 'function') {
             darkMode();  // Appelle la fonction pour activer le mode sombre
         }
     }
 });
+
+document.getElementById('theme').addEventListener('click', darkMode);
 
 function darkMode() {
     let body = document.body;
     body.classList.toggle("dark-mode");
 }
 
-//enregistre les données dans le formulaire
+// Enregistrer les données dans le formulaire
 document.getElementById('formQuestionnaire').addEventListener('submit', function(event) {
     event.preventDefault(); 
     const formData = new FormData(this);
@@ -71,13 +73,13 @@ document.getElementById('formQuestionnaire').addEventListener('submit', function
     if (!formData.has('viewTpsPause')) {
         formData.append('viewTpsPause', 'off');
     }
-    formData.append('theme', document.getElementById('theme').checked ? true : false);
+    formData.append('theme', document.getElementById('theme').checked ? 'true' : 'false');
 
+    const dataObject = {};
     formData.forEach((value, key) => {
         dataObject[key] = value;
     });
-    isViewTpsPause = dataObject.viewTpsPause == "on"? true : false;
-    isZombieSuccessif = dataObject.zombiesuccessif == "on" ? true : false;
+
     localStorage.setItem("ParamRunDead", JSON.stringify(dataObject));
     chrono();
 });
