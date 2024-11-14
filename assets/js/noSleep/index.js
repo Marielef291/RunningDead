@@ -1,4 +1,4 @@
-const { webm, mp4 } = require("./media.js");
+import { webm, mp4 } from "./media.js";
 
 // Detect iOS browsers < version 10
 const oldIOS = () =>
@@ -19,7 +19,7 @@ const oldIOS = () =>
 // Detect native Wake Lock API support
 const nativeWakeLock = () => "wakeLock" in navigator;
 
-class NoSleep {
+export class NoSleep {
   constructor() {
     this.enabled = false;
     if (nativeWakeLock()) {
@@ -140,4 +140,4 @@ class NoSleep {
   }
 }
 
-module.exports = NoSleep;
+
