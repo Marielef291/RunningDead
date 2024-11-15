@@ -75,11 +75,13 @@ document.getElementById('formQuestionnaire').addEventListener('submit', function
     }
     formData.append('theme', document.getElementById('theme').checked ? 'true' : 'false');
 
-    const dataObject = {};
+    // const dataObject = {};
     formData.forEach((value, key) => {
         dataObject[key] = value;
     });
 
+    isViewTpsPause = dataObject.viewTpsPause == "on"? true : false;
+    isZombieSuccessif = dataObject.zombiesuccessif == "on" ? true : false;
     localStorage.setItem("ParamRunDead", JSON.stringify(dataObject));
     chrono();
 });
